@@ -1,6 +1,7 @@
 /**
  * PassEvolver - Application Entry Point v1.2
- * Manages Preloader initialization, CyberShieldCanvas, MatrixRain, UIController, & Service Worker.
+ * Manages Preloader initialization, CyberShieldCanvas, MatrixRain, UIController,
+ * Service Worker, & Auto Background-Cache Clear on Page Refresh.
  */
 
 import { MatrixRain } from './matrix.js';
@@ -8,10 +9,13 @@ import { CyberShieldCanvas } from './shield-canvas.js';
 import { UIController } from './ui.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Preloader Initialization Sequence
+  // 1. Auto Background-Cache Clear on Refresh Handler
+  initAutoCacheClearOnRefresh();
+
+  // 2. Preloader Initialization Sequence
   initPreloader();
 
-  // 2. Initialize Background Animations
+  // 3. Initialize Background Animations
   const matrix = new MatrixRain('matrix-canvas');
   matrix.init();
   matrix.stop();
@@ -19,11 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const shield = new CyberShieldCanvas('matrix-canvas');
   shield.init();
 
-  // 3. Initialize UI Controller
+  // 4. Initialize UI Controller
   const ui = new UIController(matrix, shield);
   ui.init();
 
-  // 4. PWA Installation Handler
+  // 5. PWA Installation Handler
   let deferredPrompt = null;
   const pwaInstallBtn = document.getElementById('pwa-install-btn');
 
@@ -44,13 +48,41 @@ document.addEventListener('DOMContentLoaded', () => {
     pwaInstallBtn.style.display = 'none';
   });
 
-  // 5. Register Service Worker
+  // 6. Register Service Worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
     });
   }
 });
+
+function initAutoCacheClearOnRefresh() {
+  const isReload = performance.getEntriesByType('navigation')[0]?.type === 'reload';
+
+  // Purge caches on reload or before page unload
+  const purgeAllCaches = () => {
+    if ('caches' in window) {
+      caches.keys().then((names) => {
+        return Promise.all(names.map((name) => caches.delete(name)));
+      }).catch(() => {});
+    }
+    try {
+      sessionStorage.clear();
+    } catch (e) {}
+
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ action: 'CLEAR_CACHE' });
+    }
+  };
+
+  if (isReload) {
+    purgeAllCaches();
+  }
+
+  window.addEventListener('beforeunload', () => {
+    purgeAllCaches();
+  });
+}
 
 function initPreloader() {
   const preloader = document.getElementById('app-preloader');

@@ -1,40 +1,42 @@
 /**
- * Pass Evolver - Service Worker for 100% Offline PWA Functionality
- * Cache-First Strategy for Zero-Network Latency
+ * PassEvolver - Service Worker v1.2
+ * 100% Offline Asset Cache & Automated Cache Clear Management
  */
 
-const CACHE_NAME = 'pass-evolver-v1.1';
+const CACHE_NAME = 'passevolver-v1.2-cache';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './style.css',
+  './manifest.json',
+  './icon.svg',
   './js/app.js',
+  './js/ui.js',
   './js/engine.js',
   './js/matrix.js',
-  './js/ui.js',
-  './manifest.json',
-  './icon.svg'
+  './js/shield-canvas.js',
+  './js/qr.js',
+  './js/cli.js'
 ];
 
-// Install Event - Pre-cache core assets
-self.addEventListener('install', (event) => {
-  event.waitUntil(
+// Install Event
+self.addEventListener('install', (e) => {
+  self.skipWaiting();
+  e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Pre-caching static app shell...');
       return cache.addAll(ASSETS_TO_CACHE);
-    }).then(() => self.skipWaiting())
+    })
   );
 });
 
-// Activate Event - Clean up stale caches
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
+// Activate Event - Purge Legacy & Stale Caches
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) => {
       return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            console.log('[SW] Clearing old cache:', cache);
-            return caches.delete(cache);
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
           }
         })
       );
@@ -42,31 +44,34 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch Event - Cache First Strategy with local fallback
-self.addEventListener('fetch', (event) => {
-  // Only handle GET requests
-  if (event.request.method !== 'GET') return;
+// Message Listener for On-Demand & Refresh Cache Clear Commands
+self.addEventListener('message', (e) => {
+  if (e.data && e.data.action === 'CLEAR_CACHE') {
+    caches.keys().then((keys) => {
+      return Promise.all(keys.map((key) => caches.delete(key)));
+    }).then(() => {
+      if (e.ports && e.ports[0]) {
+        e.ports[0].postMessage({ success: true });
+      }
+    });
+  }
+});
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
+// Fetch Event - Stale-While-Revalidate Strategy with Offline Fallback
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((cachedResponse) => {
       if (cachedResponse) {
+        fetch(e.request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(e.request, networkResponse);
+            });
+          }
+        }).catch(() => {});
         return cachedResponse;
       }
-      return fetch(event.request).then((networkResponse) => {
-        // Cache new valid resources on the fly
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      });
-    }).catch(() => {
-      // Fallback for document navigation when offline
-      if (event.request.mode === 'navigate') {
-        return caches.match('./index.html');
-      }
+      return fetch(e.request);
     })
   );
 });
