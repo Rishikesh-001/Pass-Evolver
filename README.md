@@ -24,7 +24,7 @@
 </div>
 
 > [!IMPORTANT]
-> **PassEvolver** transforms memorable phrases into repeatable, high-entropy cryptographic keys without storing master passwords in cloud vaults. Everything runs 100% client-side in local browser memory.
+> **PassEvolver** transforms memorable phrases into repeatable, high-entropy cryptographic keys without storing master passwords in cloud vaults. Everything runs 100% client-side in local browser memory with automated background cache purging.
 >
 > 🚀 **Access the Live Web Application**: **[https://rishikesh-001.github.io/Pass-Evolver/](https://rishikesh-001.github.io/Pass-Evolver/)**
 
@@ -45,7 +45,7 @@ flowchart TD
     G --> H["🔣 Symbol Substitution"]
     H --> I["🔁 String Reversal & Character Filling"]
     I --> J["🔀 Knuth-Fisher-Yates Permutation"]
-    J --> K["📐 Target Length Trimming (8 - 32 Chars)"]
+    J --> K["📐 Default 14-Char Output Length (8 - 32 Chars)"]
     K --> L["🛡️ Final Symbol Guarantee & Output Key"]
 
     style A fill:#141519,stroke:#FFFFFF,color:#FFFFFF
@@ -56,20 +56,20 @@ flowchart TD
 
 ---
 
-## ✨ Key Features
+## ✨ Key Features & Recent Security Updates
 
-| Feature | Web Dashboard | Manifest V3 Extension |
-| :--- | :---: | :---: |
-| **Deterministic Engine (8–32 Chars)** | ✅ | ✅ |
-| **Character Syntax Highlighting** | ✅ | ✅ |
-| **Mask / Reveal Eye Toggle (`👁️`)** | ✅ | ✅ |
-| **6-Segment Neon Entropy Bar** | ✅ | ✅ |
-| **10x Parallel Determinism Verifier** | ✅ | ⚡ |
-| **Auto Domain Salt Detection** | ⚡ | ✅ |
-| **1-Click Password Auto-Fill** | ⚡ | ✅ |
-| **Pure White Glowing Aura Cursor** | ✅ | ⚡ |
-| **Seamless Preloader Screen** | ✅ | ⚡ |
-| **100% Client-Side Offline PWA** | ✅ | ✅ |
+| Feature | Description | Web Dashboard | Extension |
+| :--- | :--- | :---: | :---: |
+| **Default 14-Char Output** | Default output length tuned to 14 characters (range 8–32) | ✅ | ✅ |
+| **Syntax Color Highlighting** | Real-time color classification (`0-9` Green, Symbols Cyan, Uppercase White, Lowercase Grey) | ✅ | ✅ |
+| **Mask / Reveal Eye Toggle (`👁️`)** | Quick eye button to switch output display between plaintext & obfuscated dots (`••••`) | ✅ | ✅ |
+| **30-Second Clipboard Auto-Clear** | Interactive countdown toast that purges copied passwords from system memory after 30s | ✅ | ⚡ |
+| **Auto Refresh Cache Purge** | Automatically wipes browser `CacheStorage` & `sessionStorage` whenever page is reloaded | ✅ | ✅ |
+| **10x Determinism Verifier** | Benchmark suite testing parallel execution consistency (< 0.08ms latency) | ✅ | ⚡ |
+| **Auto Domain Salt Detection** | Automatically detects active website domain (e.g. `github.com`) as service salt | ⚡ | ✅ |
+| **1-Click Password Auto-Fill** | Injects output keys directly into password fields on active web pages | ⚡ | ✅ |
+| **Pure White Glowing Cursor** | Compact 120px radial white light trail following mouse movement | ✅ | ⚡ |
+| **Seamless Preloader Screen** | High-tech initialization sequence with neon green progress track | ✅ | ⚡ |
 
 ---
 
@@ -134,7 +134,7 @@ Pass-Evolver/
 
 | Shortcut | Action |
 | :--- | :--- |
-| `Ctrl + Shift + C` | Copy generated password to clipboard |
+| `Ctrl + Shift + C` | Copy generated password to clipboard (starts 30s auto-clear timer) |
 | `Esc` | Clear phrase input / close active modals |
 
 ---
@@ -142,7 +142,7 @@ Pass-Evolver/
 ## 📜 Security Philosophy
 
 > [!NOTE]
-> PassEvolver does not replace KDFs for vault encryption but creates repeatable, deterministic aliases for secondary assets. Zero network requests are performed by the application.
+> PassEvolver does not replace KDFs for vault encryption but creates repeatable, deterministic aliases for secondary assets. Zero network requests are performed by the application, and all browser caches & session storage are automatically purged upon page refresh.
 
 ---
 
