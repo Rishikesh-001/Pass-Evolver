@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PassEvolver v1.2 - Deterministic Password Obfuscator</title>
+
+  <!-- SEO & PWA Meta Tags -->
+  <meta name="description" content="Offline-first cybersecurity utility transforming memorable phrases into complex deterministic keys.">
+  <meta name="theme-color" content="#0C0D10">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Seamless Cybersecurity Preloader Screen -->
+  <div id="app-preloader">
+    <div class="preloader-shield-wrapper">
+      <div class="preloader-radar-ring"></div>
+      <i data-lucide="shield" class="preloader-shield-icon"></i>
+    </div>
+    <div style="text-align: center;">
+      <h1 class="preloader-brand-title">PassEvolver <span class="brand-version-tag">V1.2</span></h1>
+      <p id="preloader-status-text" class="preloader-subtext">INITIALIZING OFFLINE SECURITY PROTOCOLS...</p>
+    </div>
+    <div class="preloader-progress-box">
+      <div class="preloader-progress-track">
+        <div id="preloader-progress-fill" class="preloader-progress-fill"></div>
+      </div>
+      <div class="preloader-log-row">
+        <span id="preloader-step-name">[01/04] Loading FNV-1a Hash Engine...</span>
+        <span id="preloader-percent-num">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pure White Glowing Cursor Aura Element -->
+  <div id="cursor-glow"></div>
+
+  <!-- Background Canvas & Dark Vignette Overlay -->
+  <canvas id="matrix-canvas"></canvas>
+  <div class="bg-vignette"></div>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-group">
+        <h1 class="brand-title">PassEvolver</h1>
+        <span class="brand-version-tag">V1.2</span>
+      </div>
+
+      <div class="header-right-actions">
+        <button id="open-extension-modal-btn" class="offline-ready-badge" style="background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); color: #FFF; cursor: pointer;" title="Install Browser Extension">
+          <i data-lucide="puzzle" style="width: 13px; height: 13px; color: var(--accent-neon-green);"></i>
+          <span>BROWSER EXTENSION</span>
+        </button>
+        <div class="offline-ready-badge" title="Runs 100% client-side offline">
+          <span class="pulse-dot"></span>
+          <span>OFFLINE READY</span>
+        </div>
+        <button id="wifi-off-btn" class="icon-btn-header" title="Offline Mode Verified" aria-label="Offline Mode">
+          <i data-lucide="wifi-off"></i>
+        </button>
+        <button id="open-shortcuts-btn" class="icon-btn-header" title="Settings / Shortcuts" aria-label="Settings">
+          <i data-lucide="settings"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Transformation Engine Card -->
+    <section class="glass-card">
+      <h2 class="card-heading">Transformation Engine</h2>
+      <p class="card-subheading">Enter a memorable phrase to generate a high-entropy, deterministic key. No data ever leaves this device.</p>
+
+      <!-- Memorable Phrase Input Field with Overlay Badge -->
+      <div class="phrase-input-container">
+        <span class="input-badge-label">MEMORABLE PHRASE</span>
+        <input 
+          type="text" 
+          id="phrase-input" 
+          class="phrase-input-field" 
+          placeholder="e.g., The red fox jumps over the moon" 
+          autocomplete="off"
+          spellcheck="false"
+          maxlength="128"
+        />
+      </div>
+
+      <!-- Presets Row -->
+      <div class="presets-row">
+        <span class="presets-label">PRESETS:</span>
+        <button type="button" class="preset-pill-btn" data-phrase="ultra_secure_pass_2026">ULTRA_SECURE</button>
+        <button type="button" class="preset-pill-btn" data-phrase="dev_access_key_v1">DEV_ACCESS</button>
+        <button type="button" class="preset-pill-btn" data-phrase="legacy_compat_alias">LEGACY_COMPAT</button>
+      </div>
+
+      <!-- Controls Row: Slider & URL Safe Mode -->
+      <div class="controls-flex-row">
+        <div class="control-block">
+          <div class="control-label-header">
+            <span>OUTPUT LENGTH</span>
+            <span id="length-val-display" class="control-val-num">32</span>
+          </div>
+          <input type="range" id="length-slider" class="slider-input-stitch" min="8" max="32" value="32" step="1">
+        </div>
+
+        <div class="url-safe-card-option">
+          <div class="url-safe-title">
+            <i data-lucide="link" style="width: 14px; height: 14px;"></i>
+            <span>URL-SAFE MODE</span>
+          </div>
+          <label class="custom-switch-stitch">
+            <input type="checkbox" id="url-safe-toggle">
+            <span class="switch-track-stitch"></span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- GENERATED_OUTPUT_STREAM Card -->
+    <section class="output-stream-card">
+      <div class="stream-card-header">
+        <span class="stream-title"><i data-lucide="terminal" style="width: 14px; height: 14px; vertical-align: middle;"></i> GENERATED_OUTPUT_STREAM</span>
+        <span id="gen-time-display" class="benchmark-speed-tag">0.08ms ⚡</span>
+      </div>
+
+      <!-- Password Output Box with Eye Mask/Reveal Toggle Button -->
+      <div class="large-password-box">
+        <div id="output-display" class="password-display-text placeholder">Enter a phrase above...</div>
+        <button id="toggle-mask-btn" class="toggle-mask-btn" title="Mask / Reveal Password" type="button" aria-label="Toggle Password Visibility">
+          <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+
+      <!-- 6-Segment Entropy Bar -->
+      <div class="entropy-bar-section">
+        <div class="entropy-bar-labels">
+          <span>ENTROPY STRENGTH</span>
+          <span id="entropy-rating-label">CRITICAL_MAXIMUM</span>
+        </div>
+        <div class="entropy-6-segments">
+          <div class="seg-item filled-green"></div>
+          <div class="seg-item filled-green"></div>
+          <div class="seg-item filled-green"></div>
+          <div class="seg-item filled-green"></div>
+          <div class="seg-item filled-green"></div>
+          <div class="seg-item filled-white"></div>
+        </div>
+      </div>
+
+      <!-- Bottom Stats & Copy Password Button -->
+      <div class="stream-bottom-row">
+        <div class="stats-inline-group">
+          <div class="stat-column">
+            <span class="stat-title-sm">ENTROPY</span>
+            <span id="stat-entropy" class="stat-val-sm">192.4 bits</span>
+          </div>
+          <div class="stat-column">
+            <span class="stat-title-sm">LENGTH</span>
+            <span id="stat-length" class="stat-val-sm">32 chars</span>
+          </div>
+          <div class="stat-column">
+            <span class="stat-title-sm">ALGORITHM</span>
+            <span id="stat-algorithm" class="stat-val-sm">SHA-512/256</span>
+          </div>
+        </div>
+
+        <button id="copy-btn" class="btn-solid-white-copy" type="button">
+          <i data-lucide="copy" style="width: 16px; height: 16px;"></i> COPY PASSWORD
+        </button>
+      </div>
+    </section>
+
+    <!-- 10x Password Determinism Verifier & Benchmark Card -->
+    <section class="verifier-card">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 class="lower-card-title">
+          <i data-lucide="cpu" style="color: var(--accent-neon-green); width: 16px; height: 16px;"></i> DETERMINISM VERIFIER & 10X BENCHMARK
+        </h3>
+        <span id="verifier-status-badge" style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--accent-neon-green);">
+          🟢 100% DETERMINISTIC MATCH
+        </span>
+      </div>
+      <p style="font-size: 13px; color: var(--text-secondary); margin-top: -6px;">
+        Verify 100% deterministic consistency and execution latency across 10 parallel transformations.
+      </p>
+
+      <div class="verifier-input-flex">
+        <input type="text" id="test-input" class="phrase-input-field" style="height: 48px; font-size: 14px;" value="quantum-shield-v1" placeholder="Test Phrase..." />
+        <button id="run-test-btn" class="btn-solid-white-copy" type="button" style="padding: 0 20px;">
+          <i data-lucide="zap" style="width: 14px; height: 14px;"></i> RUN 10X TEST
+        </button>
+      </div>
+
+      <div id="test-results-log" class="test-runs-list">
+        <div class="test-run-row"><span>Run #1</span><span class="test-run-pwd">q8$Jp_#2vXk91R-mZp*5LwB!4q7N</span><span>0.08 ms</span></div>
+        <div class="test-run-row"><span>Run #2</span><span class="test-run-pwd">q8$Jp_#2vXk91R-mZp*5LwB!4q7N</span><span>0.07 ms</span></div>
+        <div class="test-run-row"><span>Run #3</span><span class="test-run-pwd">q8$Jp_#2vXk91R-mZp*5LwB!4q7N</span><span>0.08 ms</span></div>
+      </div>
+    </section>
+
+    <!-- Lower 2-Column Grid Cards -->
+    <section class="lower-cards-grid">
+      <div class="lower-card">
+        <h3 class="lower-card-title">
+          <i data-lucide="shield-check" style="color: var(--accent-neon-green); width: 16px; height: 16px;"></i> LOCAL PROTOCOL
+        </h3>
+        <p class="lower-card-body">
+          PassEvolver performs deterministic obfuscation. It does not replace KDFs for vault encryption but creates repeatable aliases for secondary assets.
+        </p>
+      </div>
+
+      <div class="lower-card">
+        <h3 class="lower-card-title">
+          <i data-lucide="history" style="width: 16px; height: 16px;"></i> LAST GENERATED
+        </h3>
+        <div id="history-list-container" class="history-list">
+          <div class="history-item-row">
+            <span class="history-name">quantum-shield-v1</span>
+            <span class="history-time">14:32:01</span>
+          </div>
+          <div class="history-item-row">
+            <span class="history-name">internal-ops-root</span>
+            <span class="history-time">12:10:44</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer-stitch">
+      © 2024 PASSEVOLVER SECURE &nbsp;•&nbsp; OFFLINE FIRST &nbsp;•&nbsp; DETERMINISTIC &nbsp;•&nbsp; LOCAL ONLY
+    </footer>
+
+  </main>
+
+  <!-- MODAL 1: BROWSER EXTENSION INSTALLATION GUIDE -->
+  <div id="extension-modal" class="modal-overlay">
+    <div class="glass-modal" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 style="font-size: 16px;"><i data-lucide="puzzle" style="color: var(--accent-neon-green); width: 18px; height: 18px;"></i> Load Browser Extension (Manifest V3)</h3>
+        <button id="close-extension-modal" class="icon-btn-header" type="button" aria-label="Close"><i data-lucide="x"></i></button>
+      </div>
+
+      <div style="font-size: 13px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 12px; line-height: 1.5;">
+        <p>You can use PassEvolver as a native Manifest V3 Extension in Chrome, Edge, Brave, and Opera with <strong>Auto Domain Salt Detection</strong> and <strong>1-Click Password Autofill</strong>.</p>
+
+        <div style="background: var(--bg-recessed); border: 1px solid var(--border-subtle); padding: 12px; border-radius: 10px; font-family: var(--font-mono); font-size: 12px;">
+          <strong style="color: #FFF;">3-Step Chrome / Edge / Brave Installation:</strong>
+          <ol style="margin-left: 18px; margin-top: 6px; display: flex; flex-direction: column; gap: 6px;">
+            <li>Open <code style="color: var(--accent-neon-green);">chrome://extensions</code> (or <code style="color: var(--accent-neon-green);">edge://extensions</code>).</li>
+            <li>Toggle <strong>Developer mode</strong> ON in the top right.</li>
+            <li>Click <strong>Load unpacked</strong> and select the project's <code style="color: #FFF;">extension/</code> folder.</li>
+          </ol>
+        </div>
+
+        <p style="font-size: 12px; color: var(--text-muted);">
+          ✓ Features: Automatically sets domain salt (e.g. <code style="color:#FFF;">github.com</code>) & auto-fills password fields on active web pages!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: SETTINGS & SHORTCUTS -->
+  <div id="shortcuts-modal" class="modal-overlay">
+    <div class="glass-modal">
+      <div class="modal-header">
+        <h3 style="font-size: 16px;"><i data-lucide="settings" style="width: 18px; height: 18px;"></i> Settings & Shortcuts</h3>
+        <button id="close-shortcuts-modal" class="icon-btn-header" type="button" aria-label="Close"><i data-lucide="x"></i></button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; font-family: var(--font-mono); font-size: 13px;">
+        <div style="display: flex; justify-content: space-between;"><span>Copy Password</span><span style="color: var(--text-muted);">Ctrl + Shift + C</span></div>
+        <div style="display: flex; justify-content: space-between;"><span>Clear Input</span><span style="color: var(--text-muted);">Esc</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- Main ES Module Script -->
+  <script type="module" src="js/app.js"></script>
+
+</body>
+</html>

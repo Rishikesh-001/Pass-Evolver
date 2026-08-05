@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PassEvolver Extension</title>
+  <link rel="stylesheet" href="popup.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="popup-container">
+    <!-- Popup Header -->
+    <header class="popup-header">
+      <div class="brand-row">
+        <h1 class="brand-title">PassEvolver</h1>
+        <span class="version-tag">EXT V1.2</span>
+      </div>
+      <div id="domain-chip" class="domain-chip" title="Active Tab Domain">
+        <span class="dot"></span>
+        <span id="domain-text">Detecting site...</span>
+      </div>
+    </header>
+
+    <!-- Phrase Input -->
+    <div class="field-block">
+      <label for="phrase-input" class="field-label">MEMORABLE PHRASE</label>
+      <input type="password" id="phrase-input" class="popup-input" placeholder="Enter memorable phrase..." autocomplete="off">
+    </div>
+
+    <!-- Domain / Salt Input -->
+    <div class="field-block">
+      <label for="salt-input" class="field-label">SERVICE SALT (AUTO-DETECTED)</label>
+      <input type="text" id="salt-input" class="popup-input" placeholder="github.com">
+    </div>
+
+    <!-- Length Slider -->
+    <div class="field-block">
+      <div class="label-row">
+        <label class="field-label">OUTPUT LENGTH</label>
+        <span id="length-val" class="length-val">32</span>
+      </div>
+      <input type="range" id="length-slider" class="popup-slider" min="8" max="32" value="32">
+    </div>
+
+    <!-- Evolved Password Output -->
+    <div class="output-card">
+      <span class="output-label">EVOLVED KEY</span>
+      <div id="output-display" class="output-text placeholder">Enter phrase above...</div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="actions-row">
+      <button id="copy-btn" class="btn-primary" type="button">
+        <i data-lucide="copy"></i> COPY
+      </button>
+      <button id="autofill-btn" class="btn-primary btn-autofill" type="button">
+        <i data-lucide="zap"></i> AUTO-FILL
+      </button>
+    </div>
+
+    <!-- Status Toast -->
+    <div id="status-toast" class="status-toast"></div>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
