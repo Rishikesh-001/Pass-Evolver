@@ -1,7 +1,8 @@
 /**
  * PassEvolver - UI Controller v1.2
  * Matches Stitch Mockup UI + Pure White Glowing Aura Cursor + 10x Determinism Verifier
- * + Option A: Syntax Highlighting & Mask/Reveal Eye Toggle.
+ * + Option A: Syntax Highlighting & Mask/Reveal Eye Toggle
+ * + Option 4: 30-Second Clipboard Auto-Clear Countdown Timer.
  */
 
 import { evolvePassword, analyzePassword } from './engine.js';
@@ -56,8 +57,11 @@ export class UIController {
     this.currentPhrase = '';
     this.currentLength = 14;
     this.isUrlSafe = false;
-    this.isMasked = false; // Mask/reveal state
+    this.isMasked = false;
     this.lastEvolvedPassword = '';
+    this.clipboardTimerInterval = null;
+    this.clipboardTimerToast = null;
+
     this.history = [
       { name: 'quantum-shield-v1', time: '14:32:01' },
       { name: 'internal-ops-root', time: '12:10:44' }
@@ -307,9 +311,9 @@ export class UIController {
     }
 
     navigator.clipboard.writeText(password).then(() => {
-      this.showToast('Password copied to clipboard!', 'success');
       this.animateCopyButton();
       this.addToHistory(this.currentPhrase || 'generated-key');
+      this.startClipboardAutoClearTimer();
     }).catch(() => {
       const textarea = document.createElement('textarea');
       textarea.value = password;
@@ -317,10 +321,64 @@ export class UIController {
       textarea.select();
       document.execCommand('copy');
       document.body.removeChild(textarea);
-      this.showToast('Password copied to clipboard!', 'success');
       this.animateCopyButton();
       this.addToHistory(this.currentPhrase || 'generated-key');
+      this.startClipboardAutoClearTimer();
     });
+  }
+
+  // OPTION 4: 30-SECOND CLIPBOARD AUTO-CLEAR COUNTDOWN TIMER LOGIC
+  startClipboardAutoClearTimer() {
+    if (this.clipboardTimerInterval) {
+      clearInterval(this.clipboardTimerInterval);
+    }
+    if (this.clipboardTimerToast && this.clipboardTimerToast.parentNode) {
+      this.clipboardTimerToast.parentNode.removeChild(this.clipboardTimerToast);
+    }
+
+    let secondsLeft = 30;
+
+    const timerToast = document.createElement('div');
+    timerToast.className = 'toast toast-clipboard-timer show';
+    timerToast.innerHTML = `
+      <div class="timer-toast-header">
+        <span class="timer-toast-msg">
+          <i data-lucide="shield-alert" style="color: var(--accent-neon-green); width: 16px; height: 16px;"></i>
+          <span>Clipboard auto-clears in <strong id="timer-sec-count" style="color: var(--accent-neon-green);">30s</strong></span>
+        </span>
+        <button id="cancel-timer-btn" class="timer-cancel-btn" type="button">CANCEL</button>
+      </div>
+      <div class="timer-progress-track">
+        <div id="timer-progress-bar" class="timer-progress-fill" style="width: 100%;"></div>
+      </div>
+    `;
+
+    this.toastContainer.appendChild(timerToast);
+    this.refreshIcons();
+    this.clipboardTimerToast = timerToast;
+
+    const cancelBtn = timerToast.querySelector('#cancel-timer-btn');
+    cancelBtn?.addEventListener('click', () => {
+      clearInterval(this.clipboardTimerInterval);
+      if (timerToast.parentNode) timerToast.parentNode.removeChild(timerToast);
+      this.showToast('Auto-clear timer cancelled', 'info');
+    });
+
+    const secCountEl = timerToast.querySelector('#timer-sec-count');
+    const progressBarEl = timerToast.querySelector('#timer-progress-bar');
+
+    this.clipboardTimerInterval = setInterval(() => {
+      secondsLeft--;
+      if (secCountEl) secCountEl.textContent = `${secondsLeft}s`;
+      if (progressBarEl) progressBarEl.style.width = `${(secondsLeft / 30) * 100}%`;
+
+      if (secondsLeft <= 0) {
+        clearInterval(this.clipboardTimerInterval);
+        navigator.clipboard.writeText('').catch(() => {});
+        if (timerToast.parentNode) timerToast.parentNode.removeChild(timerToast);
+        this.showToast('🔒 Clipboard cleared for security!', 'success');
+      }
+    }, 1000);
   }
 
   animateCopyButton() {

@@ -3,6 +3,7 @@
    Exact Desktop, Tablet & Mobile Recreation + Pure White Glowing Aura Cursor
    + Section Hover Effects + Glowing Icon Hover Interactions
    + Option A: Character Syntax Color Highlighting & Mask/Reveal Eye Toggle
+   + Option 4: 30-Second Clipboard Auto-Clear Countdown Timer
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
@@ -795,6 +796,69 @@ input:checked + .switch-track-stitch:before {
 .btn-solid-white-copy.copied {
   background: var(--accent-neon-green);
   color: #0A0B0E;
+}
+
+/* OPTION 4: 30-SECOND CLIPBOARD AUTO-CLEAR TIMER TOAST */
+.toast-clipboard-timer {
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 255, 135, 0.3);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.9), 0 0 20px var(--accent-green-glow);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 300px;
+}
+
+.timer-toast-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #FFFFFF;
+}
+
+.timer-toast-msg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timer-cancel-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.timer-cancel-btn:hover {
+  background: #FFFFFF;
+  color: #0A0B0E;
+}
+
+.timer-progress-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.timer-progress-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--accent-neon-green);
+  box-shadow: 0 0 8px var(--accent-neon-green);
+  transition: width 1s linear;
 }
 
 /* Generic Icon Hover Effect for Section Titles */
