@@ -4,6 +4,7 @@
    + Section Hover Effects + Glowing Icon Hover Interactions
    + Option A: Character Syntax Color Highlighting & Mask/Reveal Eye Toggle
    + Option 4: 30-Second Clipboard Auto-Clear Countdown Timer
+   + Upgraded Settings & Control Panel Modal
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
@@ -798,7 +799,7 @@ input:checked + .switch-track-stitch:before {
   color: #0A0B0E;
 }
 
-/* OPTION 4: 30-SECOND CLIPBOARD AUTO-CLEAR TIMER TOAST */
+/* OPTION 4: 30-SECOND CLIPBOARD AUTO-CLEAR COUNTDOWN TIMER TOAST */
 .toast-clipboard-timer {
   background: var(--bg-card);
   border: 1px solid rgba(0, 255, 135, 0.3);
@@ -859,6 +860,95 @@ input:checked + .switch-track-stitch:before {
   background: var(--accent-neon-green);
   box-shadow: 0 0 8px var(--accent-neon-green);
   transition: width 1s linear;
+}
+
+/* UPGRADED SETTINGS & CONTROL PANEL MODAL STYLES */
+.settings-section-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--bg-recessed);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.settings-section-heading {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--accent-neon-green);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 8px;
+}
+
+.setting-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.setting-text-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.setting-title-txt {
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.setting-desc-txt {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.duration-pills-row {
+  display: flex;
+  gap: 6px;
+}
+
+.duration-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.duration-pill:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+}
+
+.duration-pill.active {
+  background: var(--accent-neon-green);
+  color: #0A0B0E;
+  border-color: var(--accent-neon-green);
+}
+
+.kbd-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 6px;
 }
 
 /* Generic Icon Hover Effect for Section Titles */
@@ -1018,11 +1108,11 @@ svg, i[data-lucide] {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: 24px;
-  max-width: 440px;
+  max-width: 480px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
 /* Toast Container */

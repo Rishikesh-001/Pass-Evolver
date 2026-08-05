@@ -2,7 +2,8 @@
  * PassEvolver - UI Controller v1.2
  * Matches Stitch Mockup UI + Pure White Glowing Aura Cursor + 10x Determinism Verifier
  * + Option A: Syntax Highlighting & Mask/Reveal Eye Toggle
- * + Option 4: 30-Second Clipboard Auto-Clear Countdown Timer.
+ * + Option 4: 30-Second Clipboard Auto-Clear Countdown Timer
+ * + Upgraded Settings & Preferences Controller.
  */
 
 import { evolvePassword, analyzePassword } from './engine.js';
@@ -23,6 +24,10 @@ export class UIController {
     this.copyBtn = document.getElementById('copy-btn');
     this.toggleMaskBtn = document.getElementById('toggle-mask-btn');
     this.genTimeDisplay = document.getElementById('gen-time-display');
+
+    // Settings Controls
+    this.settingAmbiguousToggle = document.getElementById('setting-ambiguous-toggle');
+    this.durationPills = document.querySelectorAll('.duration-pill');
 
     // Entropy & Stats
     this.entropyRatingLabel = document.getElementById('entropy-rating-label');
@@ -59,6 +64,8 @@ export class UIController {
     this.isUrlSafe = false;
     this.isMasked = false;
     this.lastEvolvedPassword = '';
+    this.clipboardClearDuration = 30; // 15, 30, 60, 0
+    this.excludeAmbiguous = false;
     this.clipboardTimerInterval = null;
     this.clipboardTimerToast = null;
 
@@ -110,6 +117,24 @@ export class UIController {
       this.showToast(this.isUrlSafe ? 'URL-Safe Mode Enabled' : 'Standard Mode Enabled', 'info');
     });
 
+    // Ambiguous Char Filter Toggle
+    this.settingAmbiguousToggle?.addEventListener('change', () => {
+      this.excludeAmbiguous = this.settingAmbiguousToggle.checked;
+      this.update();
+      this.showToast(this.excludeAmbiguous ? 'Ambiguous Char Filter Enabled' : 'Ambiguous Char Filter Disabled', 'info');
+    });
+
+    // Clipboard Clear Duration Pills
+    this.durationPills.forEach((pill) => {
+      pill.addEventListener('click', (e) => {
+        const sec = parseInt(e.currentTarget.dataset.sec, 10);
+        this.durationPills.forEach(p => p.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        this.clipboardClearDuration = sec;
+        this.showToast(sec > 0 ? `Clipboard Auto-Clear: ${sec}s` : 'Clipboard Auto-Clear: Disabled', 'info');
+      });
+    });
+
     // Mask / Reveal Eye Toggle Button
     this.toggleMaskBtn?.addEventListener('click', () => {
       this.isMasked = !this.isMasked;
@@ -157,7 +182,7 @@ export class UIController {
       if (this.extensionModal) this.extensionModal.classList.remove('active');
     });
 
-    // Shortcuts Modal
+    // Settings Modal
     this.openShortcutsBtn?.addEventListener('click', () => {
       if (this.shortcutsModal) this.shortcutsModal.classList.add('active');
     });
@@ -190,7 +215,15 @@ export class UIController {
     this.outputDisplay.classList.remove('placeholder');
 
     const t0 = performance.now();
-    const evolved = evolvePassword(this.currentPhrase, this.currentLength, this.isUrlSafe, 'matrix', '');
+    let evolved = evolvePassword(this.currentPhrase, this.currentLength, this.isUrlSafe, 'matrix', '');
+
+    if (this.excludeAmbiguous) {
+      evolved = evolved.replace(/[1lI0OQ]/g, (match, offset) => {
+        const replaceChars = '23456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ';
+        return replaceChars[offset % replaceChars.length];
+      });
+    }
+
     const t1 = performance.now();
     const elapsed = (t1 - t0).toFixed(2);
 
@@ -327,7 +360,7 @@ export class UIController {
     });
   }
 
-  // OPTION 4: 30-SECOND CLIPBOARD AUTO-CLEAR COUNTDOWN TIMER LOGIC
+  // UPDATED: CLIPBOARD AUTO-CLEAR COUNTDOWN TIMER RESPECTS USER PREFERENCE
   startClipboardAutoClearTimer() {
     if (this.clipboardTimerInterval) {
       clearInterval(this.clipboardTimerInterval);
@@ -336,7 +369,13 @@ export class UIController {
       this.clipboardTimerToast.parentNode.removeChild(this.clipboardTimerToast);
     }
 
-    let secondsLeft = 30;
+    const duration = this.clipboardClearDuration;
+    if (duration <= 0) {
+      this.showToast('Password copied to clipboard!', 'success');
+      return;
+    }
+
+    let secondsLeft = duration;
 
     const timerToast = document.createElement('div');
     timerToast.className = 'toast toast-clipboard-timer show';
@@ -344,7 +383,7 @@ export class UIController {
       <div class="timer-toast-header">
         <span class="timer-toast-msg">
           <i data-lucide="shield-alert" style="color: var(--accent-neon-green); width: 16px; height: 16px;"></i>
-          <span>Clipboard auto-clears in <strong id="timer-sec-count" style="color: var(--accent-neon-green);">30s</strong></span>
+          <span>Clipboard auto-clears in <strong id="timer-sec-count" style="color: var(--accent-neon-green);">${secondsLeft}s</strong></span>
         </span>
         <button id="cancel-timer-btn" class="timer-cancel-btn" type="button">CANCEL</button>
       </div>
@@ -370,7 +409,7 @@ export class UIController {
     this.clipboardTimerInterval = setInterval(() => {
       secondsLeft--;
       if (secCountEl) secCountEl.textContent = `${secondsLeft}s`;
-      if (progressBarEl) progressBarEl.style.width = `${(secondsLeft / 30) * 100}%`;
+      if (progressBarEl) progressBarEl.style.width = `${(secondsLeft / duration) * 100}%`;
 
       if (secondsLeft <= 0) {
         clearInterval(this.clipboardTimerInterval);

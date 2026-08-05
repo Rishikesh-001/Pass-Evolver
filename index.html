@@ -70,7 +70,7 @@
         <button id="wifi-off-btn" class="icon-btn-header" title="Offline Mode Verified" aria-label="Offline Mode">
           <i data-lucide="wifi-off"></i>
         </button>
-        <button id="open-shortcuts-btn" class="icon-btn-header" title="Settings / Shortcuts" aria-label="Settings">
+        <button id="open-shortcuts-btn" class="icon-btn-header" title="Settings & Preferences" aria-label="Settings">
           <i data-lucide="settings"></i>
         </button>
       </div>
@@ -166,7 +166,7 @@
           </div>
           <div class="stat-column">
             <span class="stat-title-sm">LENGTH</span>
-            <span id="stat-length" class="stat-val-sm">32 chars</span>
+            <span id="stat-length" class="stat-val-sm">14 chars</span>
           </div>
           <div class="stat-column">
             <span class="stat-title-sm">ALGORITHM</span>
@@ -202,9 +202,9 @@
       </div>
 
       <div id="test-results-log" class="test-runs-list">
-        <div class="test-run-row"><span>Run #1</span><span class="test-run-pwd">q8$Jp_#2vXk91R-mZp*5LwB!4q7N</span><span>0.08 ms</span></div>
-        <div class="test-run-row"><span>Run #2</span><span class="test-run-pwd">q8$Jp_#2vXk91R-mZp*5LwB!4q7N</span><span>0.07 ms</span></div>
-        <div class="test-run-row"><span>Run #3</span><span class="test-run-pwd">q8$Jp_#2vXk91R-mZp*5LwB!4q7N</span><span>0.08 ms</span></div>
+        <div class="test-run-row"><span>Run #1</span><span class="test-run-pwd">q8$Jp_#2vXk91R</span><span>0.08 ms</span></div>
+        <div class="test-run-row"><span>Run #2</span><span class="test-run-pwd">q8$Jp_#2vXk91R</span><span>0.07 ms</span></div>
+        <div class="test-run-row"><span>Run #3</span><span class="test-run-pwd">q8$Jp_#2vXk91R</span><span>0.08 ms</span></div>
       </div>
     </section>
 
@@ -249,7 +249,7 @@
   <!-- MODAL 1: BROWSER EXTENSION INSTALLATION GUIDE -->
   <div id="extension-modal" class="modal-overlay">
     <div class="glass-modal" style="max-width: 520px;">
-      <div class="modal-header">
+      <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
         <h3 style="font-size: 16px;"><i data-lucide="puzzle" style="color: var(--accent-neon-green); width: 18px; height: 18px;"></i> Load Browser Extension (Manifest V3)</h3>
         <button id="close-extension-modal" class="icon-btn-header" type="button" aria-label="Close"><i data-lucide="x"></i></button>
       </div>
@@ -273,16 +273,64 @@
     </div>
   </div>
 
-  <!-- MODAL 2: SETTINGS & SHORTCUTS -->
+  <!-- MODAL 2: UPGRADED SETTINGS & CONTROL PANEL -->
   <div id="shortcuts-modal" class="modal-overlay">
     <div class="glass-modal">
-      <div class="modal-header">
-        <h3 style="font-size: 16px;"><i data-lucide="settings" style="width: 18px; height: 18px;"></i> Settings & Shortcuts</h3>
+      <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="font-size: 16px;"><i data-lucide="settings" style="color: var(--accent-neon-green); width: 18px; height: 18px;"></i> Settings & Preferences</h3>
         <button id="close-shortcuts-modal" class="icon-btn-header" type="button" aria-label="Close"><i data-lucide="x"></i></button>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 10px; font-family: var(--font-mono); font-size: 13px;">
-        <div style="display: flex; justify-content: space-between;"><span>Copy Password</span><span style="color: var(--text-muted);">Ctrl + Shift + C</span></div>
-        <div style="display: flex; justify-content: space-between;"><span>Clear Input</span><span style="color: var(--text-muted);">Esc</span></div>
+
+      <!-- Section 1: Security Preferences -->
+      <div class="settings-section-block">
+        <span class="settings-section-heading"><i data-lucide="sliders" style="width: 14px; height: 14px;"></i> SYSTEM PREFERENCES</span>
+        
+        <div class="setting-item-row">
+          <div class="setting-text-col">
+            <span class="setting-title-txt">Clipboard Auto-Clear</span>
+            <span class="setting-desc-txt">Purge clipboard memory on timer</span>
+          </div>
+          <div class="duration-pills-row">
+            <button type="button" class="duration-pill" data-sec="15">15s</button>
+            <button type="button" class="duration-pill active" data-sec="30">30s</button>
+            <button type="button" class="duration-pill" data-sec="60">60s</button>
+            <button type="button" class="duration-pill" data-sec="0">Off</button>
+          </div>
+        </div>
+
+        <div class="setting-item-row">
+          <div class="setting-text-col">
+            <span class="setting-title-txt">Ambiguous Char Filter</span>
+            <span class="setting-desc-txt">Exclude confusing chars (1, l, I, 0, O)</span>
+          </div>
+          <label class="custom-switch-stitch">
+            <input type="checkbox" id="setting-ambiguous-toggle">
+            <span class="switch-track-stitch"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Section 2: Keyboard Shortcuts -->
+      <div class="settings-section-block">
+        <span class="settings-section-heading"><i data-lucide="keyboard" style="width: 14px; height: 14px;"></i> KEYBOARD SHORTCUTS</span>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 13px; color: var(--text-secondary);">Copy Password</span>
+            <div style="display: flex; gap: 4px;">
+              <span class="kbd-badge">Ctrl</span><span style="color: var(--text-muted);">+</span><span class="kbd-badge">Shift</span><span style="color: var(--text-muted);">+</span><span class="kbd-badge">C</span>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 13px; color: var(--text-secondary);">Close Modals / Reset</span>
+            <span class="kbd-badge">Esc</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Diagnostic Info & Footer -->
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
+        <span>STATUS: 🟢 CLIENT-SIDE SANDBOX ACTIVE</span>
+        <span style="color: #FFF; font-weight: 600;">Made with love by Rishikesh ❤️</span>
       </div>
     </div>
   </div>
