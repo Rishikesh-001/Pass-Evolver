@@ -54,7 +54,7 @@ export class UIController {
 
     // State
     this.currentPhrase = '';
-    this.currentLength = 32;
+    this.currentLength = 14;
     this.isUrlSafe = false;
     this.isMasked = false; // Mask/reveal state
     this.lastEvolvedPassword = '';
