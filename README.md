@@ -12,11 +12,12 @@
 
 ### Deterministic Password Engine & Manifest V3 WebExtension
 
-**100% Offline-First • Zero Cloud Network Calls • High-Entropy Deterministic Key Obfuscation**
+🌐 **Live Demo Website**: **[https://rishikesh-001.github.io/Pass-Evolver/](https://rishikesh-001.github.io/Pass-Evolver/)**
 
-[![Offline Ready](https://img.shields.io/badge/Status-🟢%20OFFLINE%20READY-00FF87?style=for-the-badge&labelColor=0C0D10)](https://github.com/Rishikesh-001/Pass-Evolver)
+[![Live WebApp](https://img.shields.io/badge/Website-LIVE%20DEMO-00FF87?style=for-the-badge&logo=googlechrome&logoColor=0C0D10&labelColor=0C0D10)](https://rishikesh-001.github.io/Pass-Evolver/)
+[![Offline Ready](https://img.shields.io/badge/Status-🟢%20OFFLINE%20READY-00FF87?style=for-the-badge&labelColor=0C0D10)](https://rishikesh-001.github.io/Pass-Evolver/)
 [![Manifest V3](https://img.shields.io/badge/Extension-Manifest%20V3-00E5FF?style=for-the-badge&labelColor=0C0D10)](https://github.com/Rishikesh-001/Pass-Evolver)
-[![Entropy Rating](https://img.shields.io/badge/Entropy-CRITICAL__MAXIMUM-FF0055?style=for-the-badge&labelColor=0C0D10)](https://github.com/Rishikesh-001/Pass-Evolver)
+[![Entropy Rating](https://img.shields.io/badge/Entropy-CRITICAL__MAXIMUM-FF0055?style=for-the-badge&labelColor=0C0D10)](https://rishikesh-001.github.io/Pass-Evolver/)
 
 ---
 
@@ -24,6 +25,8 @@
 
 > [!IMPORTANT]
 > **PassEvolver** transforms memorable phrases into repeatable, high-entropy cryptographic keys without storing master passwords in cloud vaults. Everything runs 100% client-side in local browser memory.
+>
+> 🚀 **Access the Live Web Application**: **[https://rishikesh-001.github.io/Pass-Evolver/](https://rishikesh-001.github.io/Pass-Evolver/)**
 
 ---
 
@@ -123,7 +126,7 @@ Pass-Evolver/
    npx -y serve . -p 8080
    ```
 
-3. Open your browser to **`http://localhost:8080`**.
+3. Open your browser to **`http://localhost:8080`** or visit **[https://rishikesh-001.github.io/Pass-Evolver/](https://rishikesh-001.github.io/Pass-Evolver/)**.
 
 ---
 
