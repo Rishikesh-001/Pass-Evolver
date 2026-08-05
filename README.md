@@ -146,5 +146,8 @@ Pass-Evolver/
 
 ---
 
-## 📄 License
-Released under the MIT License. © 2024 PASSEVOLVER SECURE.
+<div align="center">
+
+### Made with love by Rishikesh ❤️
+
+</div>
