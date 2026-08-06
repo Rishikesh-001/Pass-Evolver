@@ -246,30 +246,39 @@
 
   </main>
 
-  <!-- MODAL 1: BROWSER EXTENSION INSTALLATION GUIDE -->
+  <!-- MODAL 1: BROWSER EXTENSION INSTALLATION GUIDE & DOWNLOADS -->
   <div id="extension-modal" class="modal-overlay">
-    <div class="glass-modal" style="max-width: 520px;">
+    <div class="glass-modal" style="max-width: 540px;">
       <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="font-size: 16px;"><i data-lucide="puzzle" style="color: var(--accent-neon-green); width: 18px; height: 18px;"></i> Load Browser Extension (Manifest V3)</h3>
+        <h3 style="font-size: 16px;"><i data-lucide="puzzle" style="color: var(--accent-neon-green); width: 18px; height: 18px;"></i> Browser Extension Setup & Download</h3>
         <button id="close-extension-modal" class="icon-btn-header" type="button" aria-label="Close"><i data-lucide="x"></i></button>
       </div>
 
-      <div style="font-size: 13px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 12px; line-height: 1.5;">
-        <p>You can use PassEvolver as a native Manifest V3 Extension in Chrome, Edge, Brave, and Opera with <strong>Auto Domain Salt Detection</strong> and <strong>1-Click Password Autofill</strong>.</p>
+      <div style="font-size: 13px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 14px; line-height: 1.5;">
+        <!-- Download Zip Button -->
+        <a href="PassEvolver-Extension.zip" download="PassEvolver-Extension.zip" class="btn-solid-white-copy" style="text-decoration: none; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent-neon-green); color: #0A0B0E;">
+          <i data-lucide="download" style="width: 16px; height: 16px;"></i> DOWNLOAD EXTENSION (.ZIP)
+        </a>
 
         <div style="background: var(--bg-recessed); border: 1px solid var(--border-subtle); padding: 14px; border-radius: 10px; font-family: var(--font-mono); font-size: 12px;">
           <strong style="color: #FFF;">4-Step Chrome / Edge / Brave Setup:</strong>
           <ol style="margin-left: 18px; margin-top: 8px; display: flex; flex-direction: column; gap: 6px;">
-            <li>Open <code style="color: var(--accent-neon-green);">chrome://extensions</code> (or <code style="color: var(--accent-neon-green);">edge://extensions</code>) in your URL bar.</li>
-            <li>Enable <strong>Developer mode</strong> (toggle switch in top right corner).</li>
-            <li>Click the <strong>Load unpacked</strong> button (top left).</li>
-            <li>Select the <code style="color: #FFF;">Pass-Evolver/extension</code> folder from your project directory.</li>
+            <li>Download and unzip <code style="color: var(--accent-neon-green);">PassEvolver-Extension.zip</code>.</li>
+            <li>Open <code style="color: var(--accent-neon-green);">chrome://extensions</code> (or <code style="color: var(--accent-neon-green);">edge://extensions</code>).</li>
+            <li>Turn <strong>Developer mode</strong> ON (toggle switch in top right corner).</li>
+            <li>Click <strong>Load unpacked</strong> and select the extracted extension folder.</li>
           </ol>
         </div>
 
-        <p style="font-size: 12px; color: var(--text-muted);">
-          ✓ Features: Auto-detects website hostname (e.g. <code style="color:#FFF;">github.com</code>) & auto-fills password inputs with 1 click!
-        </p>
+        <!-- Official Developer Resources Links -->
+        <div style="display: flex; flex-direction: column; gap: 6px; font-family: var(--font-mono); font-size: 11px;">
+          <span style="color: var(--text-muted); font-weight: 700; letter-spacing: 1px;">OFFICIAL DEVELOPER RESOURCES:</span>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <a href="https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked" target="_blank" rel="noopener noreferrer" style="color: var(--accent-neon-green); text-decoration: underline;">Chrome Guide ↗</a>
+            <a href="https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading" target="_blank" rel="noopener noreferrer" style="color: var(--accent-cyan); text-decoration: underline;">Edge Guide ↗</a>
+            <a href="https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/" target="_blank" rel="noopener noreferrer" style="color: #FFF; text-decoration: underline;">Firefox Guide ↗</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
