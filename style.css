@@ -4,7 +4,7 @@
    + Section Hover Effects + Glowing Icon Hover Interactions
    + Option A: Character Syntax Color Highlighting & Mask/Reveal Eye Toggle
    + Option 4: 30-Second Clipboard Auto-Clear Countdown Timer
-   + Upgraded Settings & Control Panel Modal
+   + Upgraded Responsive Settings & Control Panel Modal
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
@@ -922,7 +922,8 @@ input:checked + .switch-track-stitch:before {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 6px 12px;
+  min-height: 34px;
   border-radius: 12px;
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -1110,9 +1111,30 @@ svg, i[data-lucide] {
   padding: 24px;
   max-width: 480px;
   width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+
+/* Custom Scrollbar for Glass Modal */
+.glass-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.glass-modal::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.glass-modal::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.glass-modal::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-neon-green);
 }
 
 /* Toast Container */
@@ -1243,6 +1265,38 @@ svg, i[data-lucide] {
     font-size: 11px;
     padding: 6px 12px;
     min-height: 36px;
+  }
+
+  /* Responsive Settings Modal Refinements */
+  .glass-modal {
+    padding: 16px;
+    width: 95%;
+    max-height: 85vh;
+  }
+
+  .setting-item-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .setting-item-row.row-toggle {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .duration-pills-row {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .duration-pill {
+    flex: 1;
+    text-align: center;
+    padding: 6px 2px;
+    font-size: 10px;
   }
 
   #toast-container {
