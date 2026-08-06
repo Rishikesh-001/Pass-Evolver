@@ -20,10 +20,15 @@
       </div>
     </header>
 
-    <!-- Phrase Input -->
+    <!-- Phrase Input with Eye Mask/Reveal Toggle -->
     <div class="field-block">
       <label for="phrase-input" class="field-label">MEMORABLE PHRASE</label>
-      <input type="password" id="phrase-input" class="popup-input" placeholder="Enter memorable phrase..." autocomplete="off">
+      <div class="input-with-eye">
+        <input type="password" id="phrase-input" class="popup-input" placeholder="Enter memorable phrase..." autocomplete="off">
+        <button type="button" id="toggle-phrase-eye" class="eye-toggle-btn" title="Mask / Reveal Phrase" aria-label="Toggle Phrase Mask">
+          <svg id="eye-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
+      </div>
     </div>
 
     <!-- Domain / Salt Input -->
