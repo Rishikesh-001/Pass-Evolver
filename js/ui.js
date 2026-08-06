@@ -15,6 +15,7 @@ export class UIController {
 
     // DOM Elements
     this.phraseInput = document.getElementById('phrase-input');
+    this.togglePhraseMaskBtn = document.getElementById('toggle-phrase-mask-btn');
     this.lengthSlider = document.getElementById('length-slider');
     this.lengthValDisplay = document.getElementById('length-val-display');
     this.urlSafeToggle = document.getElementById('url-safe-toggle');
@@ -63,6 +64,7 @@ export class UIController {
     this.currentLength = 14;
     this.isUrlSafe = false;
     this.isMasked = false;
+    this.isPhraseMasked = true;
     this.lastEvolvedPassword = '';
     this.clipboardClearDuration = 30; // 15, 30, 60, 0
     this.excludeAmbiguous = false;
@@ -103,6 +105,21 @@ export class UIController {
       this.update();
     });
 
+    // Phrase Mask / Reveal Eye Toggle Button
+    this.togglePhraseMaskBtn?.addEventListener('click', () => {
+      this.isPhraseMasked = !this.isPhraseMasked;
+      if (this.phraseInput) {
+        this.phraseInput.type = this.isPhraseMasked ? 'password' : 'text';
+      }
+      if (this.togglePhraseMaskBtn) {
+        this.togglePhraseMaskBtn.innerHTML = this.isPhraseMasked 
+          ? '<i data-lucide="eye" style="width: 18px; height: 18px;"></i>' 
+          : '<i data-lucide="eye-off" style="width: 18px; height: 18px;"></i>';
+        this.refreshIcons();
+      }
+      this.showToast(this.isPhraseMasked ? 'Phrase Masked' : 'Phrase Revealed', 'info');
+    });
+
     // Slider
     this.lengthSlider?.addEventListener('input', () => {
       this.currentLength = parseInt(this.lengthSlider.value, 10);
@@ -135,7 +152,7 @@ export class UIController {
       });
     });
 
-    // Mask / Reveal Eye Toggle Button
+    // Output Mask / Reveal Eye Toggle Button
     this.toggleMaskBtn?.addEventListener('click', () => {
       this.isMasked = !this.isMasked;
       if (this.toggleMaskBtn) {
@@ -360,7 +377,6 @@ export class UIController {
     });
   }
 
-  // UPDATED: CLIPBOARD AUTO-CLEAR COUNTDOWN TIMER RESPECTS USER PREFERENCE
   startClipboardAutoClearTimer() {
     if (this.clipboardTimerInterval) {
       clearInterval(this.clipboardTimerInterval);

@@ -81,18 +81,22 @@
       <h2 class="card-heading">Transformation Engine</h2>
       <p class="card-subheading">Enter a memorable phrase to generate a high-entropy, deterministic key. No data ever leaves this device.</p>
 
-      <!-- Memorable Phrase Input Field with Overlay Badge -->
+      <!-- Memorable Phrase Input Field with Overlay Badge & Eye Toggle -->
       <div class="phrase-input-container">
         <span class="input-badge-label">MEMORABLE PHRASE</span>
         <input 
-          type="text" 
+          type="password" 
           id="phrase-input" 
           class="phrase-input-field" 
           placeholder="e.g., The red fox jumps over the moon" 
           autocomplete="off"
           spellcheck="false"
           maxlength="128"
+          style="padding-right: 48px;"
         />
+        <button id="toggle-phrase-mask-btn" class="toggle-mask-btn" style="right: 12px;" title="Mask / Reveal Phrase" type="button" aria-label="Toggle Phrase Visibility">
+          <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
+        </button>
       </div>
 
       <!-- Presets Row -->
