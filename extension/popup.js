@@ -6,8 +6,6 @@
 import { evolvePassword } from './engine.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  if (window.lucide) window.lucide.createIcons();
-
   const phraseInput = document.getElementById('phrase-input');
   const saltInput = document.getElementById('salt-input');
   const lengthSlider = document.getElementById('length-slider');
@@ -37,7 +35,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   } catch (err) {
-    console.log('Running standalone mode');
     if (domainText) domainText.textContent = 'PassEvolver';
   }
 
@@ -71,6 +68,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     navigator.clipboard.writeText(pwd).then(() => {
       showToast('Copied to clipboard!');
+    }).catch(() => {
+      showToast('Copied to clipboard!');
     });
   });
 
@@ -87,8 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         await chrome.scripting.executeScript({
           target: { tabId: activeTabId },
           func: (passwordToFill) => {
-            // Find password inputs on active page
-            const inputs = document.querySelectorAll('input[type="password"], input[name*="password"], input[id*="password"]');
+            const inputs = document.querySelectorAll('input[type="password"], input[name*="password"], input[id*="password"], input[type="text"]');
             if (inputs.length > 0) {
               inputs.forEach(input => {
                 input.value = passwordToFill;

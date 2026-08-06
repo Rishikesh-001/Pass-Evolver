@@ -1,12 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "PassEvolver - Deterministic Password Engine",
+  "name": "PassEvolver - Deterministic Password Generator",
   "version": "1.2.0",
-  "description": "Offline-first deterministic password generator and domain salt manager.",
+  "description": "100% offline deterministic password generator with auto domain salt and 1-click autofill.",
   "permissions": [
     "activeTab",
     "scripting",
     "clipboardWrite"
+  ],
+  "host_permissions": [
+    "<all_urls>"
   ],
   "action": {
     "default_popup": "popup.html",
